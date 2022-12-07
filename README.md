@@ -29,8 +29,11 @@ Make sure to keep your keys in `keys.py` a secret.
 Now you're ready to get going. You can either run the telegram bot or the discord bot or both!
 
 ```bash
-# To run the telegram bot:
+# To run a simple CLI chat bot:
 ./chatbot.py
+
+# To run the telegram bot:
+./telegram_chatbot.py
 
 # To run the discord bot:
 ./discord_chatbot.py
@@ -45,8 +48,12 @@ You can read about OpenAI [here](https://openai.com/api/). There are a lot of pa
 Use [BotFather](https://t.me/BotFather) to setup your telegram bot.
 You will get an authorzation token from it that you can add to your keys.py file.
 
+Once you add the bot to your chat server, you can use the `/p` or `/prompt` command followed by your input to get a response.
+
 ## Discord
 
 Discord was slightly more involved to setup and add to your channels.
 You can set up an app and a bot [here](https://discord.com/developers/applications) but look up any tutorials to create one.
 
+Add the bot to a specfic channel and give message permisisons.
+Use `/p` at the start of your message to get the bot to respond.
