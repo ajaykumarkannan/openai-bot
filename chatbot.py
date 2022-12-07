@@ -39,6 +39,8 @@ def prompt(update: Update, context: CallbackContext) -> None:
 
         if len(context.args) < 2:
             raise KeyError("Type something in, you dumb POS")
+
+        update.message.reply_chat_action(action=ChatAction.TYPING)
         prompt_value = " ".join(context.args[:])
         # create a completion
         completion = openai.Completion.create(engine=model, prompt=prompt_value, max_tokens=max_token_value)
