@@ -86,7 +86,7 @@ def stable_diffusion(update: Update, context: CallbackContext) -> None:
         filename = "output" + str(image_num) + ".png"
 
         update.message.reply_photo(open(filename, "rb"))
-        os.remove()
+        os.remove(filename)
     except KeyError:
         update.message.reply_text(KeyError)
 
