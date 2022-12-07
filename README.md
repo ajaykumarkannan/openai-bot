@@ -22,6 +22,7 @@ First, you'll need to set a file called keys.py with the following content:
 openai_api_key = "<openai_api_key>"
 telegram_bot_key = "<telegram_bot_key>"
 discord_key = '<discord_bot_key>'
+sd_key = "<dreamstudio_key>"
 ```
 
 Make sure to keep your keys in `keys.py` a secret.
@@ -49,6 +50,19 @@ Use [BotFather](https://t.me/BotFather) to setup your telegram bot.
 You will get an authorzation token from it that you can add to your keys.py file.
 
 Once you add the bot to your chat server, you can use the `/p` or `/prompt` command followed by your input to get a response.
+
+### Stable Diffusion
+
+The telegram bot also supports the stable diffusion API to generate images with the default parameters.
+It relies on [DreamStudio.AI](https://beta.dreamstudio.ai/).
+
+You can use it like so:
+
+```
+/s <prompt for stable diffusion>
+```
+
+The bot will respond to your text with an image.
 
 ## Discord
 

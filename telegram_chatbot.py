@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
+import os
 import openai
+import random
 from telegram import Update
 from telegram.ext import (
     Updater,
@@ -11,6 +13,7 @@ from telegram.ext import (
 from telegram import InputMediaPhoto, ParseMode, ChatAction
 import time
 import logging
+from stable_diffusion import sd_call
 
 from keys import openai_api_key
 from keys import telegram_bot_key
@@ -28,7 +31,8 @@ def help(update: Update, _: CallbackContext) -> None:
     update.message.reply_text(
         "Help Menu:\n"
         "/prompt <text> - Use a query\n"
-        "/p<text> - Use a query\n"
+        "/p <text> - Use a query\n"
+        "/s <text> - build an image using stable diffusion\n"
         "/help - Print this menu\n"
         "/info - to print the README"
     )
@@ -47,11 +51,15 @@ def prompt(update: Update, context: CallbackContext) -> None:
         model = "text-davinci-003"
         max_token_value = 3000
 
-        if len(context.args) < 2:
-            raise KeyError("Type something in, you dumb POS")
-
         update.message.reply_chat_action(action=ChatAction.TYPING)
-        prompt_value = " ".join(context.args[:])
+
+        if len(context.args) == 1:
+            prompt_value = context.args[0]
+        elif len(context.args) < 2:
+            raise KeyError("Type something in, you dumb POS")
+        else:
+            prompt_value = " ".join(context.args[:])
+
         # create a completion
         completion = openai.Completion.create(
             engine=model, prompt=prompt_value, max_tokens=max_token_value
@@ -59,6 +67,26 @@ def prompt(update: Update, context: CallbackContext) -> None:
 
         # print the completion
         update.message.reply_text((completion.choices[0].text))
+    except KeyError:
+        update.message.reply_text(KeyError)
+
+
+def stable_diffusion(update: Update, context: CallbackContext) -> None:
+    try:
+        if len(context.args) == 1:
+            prompt_value = context.args[0]
+        elif len(context.args) < 2:
+            raise KeyError("Type something in, you dumb POS")
+        else:
+            prompt_value = " ".join(context.args[:])
+
+        update.message.reply_chat_action(action=ChatAction.TYPING)
+        image_num = random.randint(1000, 9999)
+        sd_call(prompt_value, image_num)
+        filename = "output" + str(image_num) + ".png"
+
+        update.message.reply_photo(open(filename, "rb"))
+        os.remove()
     except KeyError:
         update.message.reply_text(KeyError)
 
@@ -72,7 +100,13 @@ def main() -> None:
     dispatcher = updater.dispatcher
 
     # on different commands - answer in Telegram
-    function_list = {"start": help, "prompt": prompt, "p": prompt, "info": info}
+    function_list = {
+        "start": help,
+        "prompt": prompt,
+        "p": prompt,
+        "s": stable_diffusion,
+        "info": info,
+    }
     for key, value in function_list.items():
         dispatcher.add_handler(CommandHandler(key, value))
 
