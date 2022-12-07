@@ -80,7 +80,7 @@ def stable_diffusion(update: Update, context: CallbackContext) -> None:
         else:
             prompt_value = " ".join(context.args[:])
 
-        update.message.reply_chat_action(action=ChatAction.TYPING)
+        update.message.reply_chat_action(action=ChatAction.UPLOAD_PHOTO)
         image_num = random.randint(1000, 9999)
         sd_call(prompt_value, image_num)
         filename = "output" + str(image_num) + ".png"
