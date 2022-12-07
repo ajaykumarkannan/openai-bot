@@ -8,7 +8,7 @@ def main():
     openai.api_key = openai_api_key
     model = "text-davinci-003"
     max_token_value = 3000
-    print("Welcome to a simple OpenAI CLI chat bot. Type \"exit\" or \"quit\" to quit")
+    print('Welcome to a simple OpenAI CLI chat bot. Type "exit" or "quit" to quit')
     while 1:
         try:
             prompt_value = input("> ")
@@ -20,7 +20,9 @@ def main():
                 exit()
 
             # create a completion
-            completion = openai.Completion.create(engine=model, prompt=prompt_value, max_tokens=max_token_value)
+            completion = openai.Completion.create(
+                engine=model, prompt=prompt_value, max_tokens=max_token_value
+            )
 
             # print the completion
             print(completion.choices[0].text.strip())
